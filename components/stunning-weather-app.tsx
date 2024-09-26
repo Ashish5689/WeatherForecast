@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Cloud, Sun, CloudRain, Wind, Droplets, Thermometer, Loader2, MapPin, Sunrise, Sunset, X } from "lucide-react"
+import { Cloud, Sun, CloudRain, Wind, Droplets, Loader2, MapPin, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import axios from 'axios'
 import { ForecastSection } from './ForecastSection'
@@ -33,7 +33,7 @@ const fetchWeatherData = async (city: string) => {
       temperature: data.currentConditions.temp,
       humidity: data.currentConditions.humidity,
       windSpeed: data.currentConditions.windspeed,
-      forecast: data.days.slice(1, 8).map((day: any) => ({
+      forecast: data.days.slice(1, 8).map((day: ForecastDay) => ({
         date: day.datetime,
         tempmax: day.tempmax,
         tempmin: day.tempmin,
@@ -77,13 +77,6 @@ type ForecastDay = {
   tempmin: number
   condition: string
   icon: string
-}
-
-// Helper function to get weather condition from Windy data
-const getConditionFromWindy = (data: any): string => {
-  if (data.precip > 0) return 'rainy'
-  if (data.rh > 80) return 'cloudy'
-  return 'sunny' // Default to sunny if no other condition is met
 }
 
 // Helper function to get background color based on condition
